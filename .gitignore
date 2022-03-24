@@ -1,0 +1,6 @@
+Library/
+Logs/
+obj/
+UserSettings/
+Assembly-CSharp.csproj
+Donkey-Kong.sln
