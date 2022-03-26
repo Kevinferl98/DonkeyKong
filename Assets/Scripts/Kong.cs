@@ -28,11 +28,17 @@ public class Kong : MonoBehaviour
     {
         while (true)
         {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-            Instantiate(prefab, empty.transform.position, Quaternion.identity);
-            yield return new WaitForSeconds(0.5f);
-            transform.rotation = Quaternion.identity;
-            yield return new WaitForSeconds((float)GetRandomNumber(1,3));
+            Debug.Log("Ripeto il ciclo");
+            if (GameManager.Instance().play == true)
+            {
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+                Instantiate(prefab, empty.transform.position, Quaternion.identity);
+                yield return new WaitForSeconds(0.5f);
+                transform.rotation = Quaternion.identity;
+                yield return new WaitForSeconds((float)GetRandomNumber(1, 3));
+            }
+            else
+                yield return new WaitForSeconds(2f);
         }
     }
 

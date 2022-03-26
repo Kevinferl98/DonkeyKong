@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private bool scala = false;
     private bool jumping = false;
     private bool ground = true;
+    private Vector2 start = new Vector2(-4.5f, -4f);
 
     public Animator animator;
     private Rigidbody2D _rigidbody;
@@ -64,6 +65,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         animator.SetBool("hit", false);
         Physics2D.IgnoreLayerCollision(0, 2, false);
+        transform.position = start;
+        GameManager.Instance().Restart();
     }
 
     public void OnCollisionEnter2D(Collision2D collision)

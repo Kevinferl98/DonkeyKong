@@ -17,6 +17,8 @@ public class Barrel : MonoBehaviour
     {
         if (transform.position.y < -6)
             Destroy(gameObject);
+        if (GameManager.Instance().restart == true)
+            Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
