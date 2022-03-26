@@ -8,6 +8,7 @@ TagManager:
   - Ladder
   - Barrier
   - Barrier1
+  - Barrel
   layers:
   - Default
   - TransparentFX

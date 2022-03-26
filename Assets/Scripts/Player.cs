@@ -57,6 +57,15 @@ public class Player : MonoBehaviour
         Ladder();
     }
 
+    private IEnumerator Death()
+    {
+        Physics2D.IgnoreLayerCollision(0, 2, true);
+        animator.SetBool("hit", true);
+        yield return new WaitForSeconds(0.8f);
+        animator.SetBool("hit", false);
+        Physics2D.IgnoreLayerCollision(0, 2, false);
+    }
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Platform"))
@@ -69,6 +78,11 @@ public class Player : MonoBehaviour
                 animator.SetBool("finish", false);
             if (collision.gameObject.transform.position.y < transform.position.y)
                 ground = true;
+        }
+        if (collision.gameObject.CompareTag("Barrel"))
+        {
+            Debug.Log("Colpito Mario");
+            StartCoroutine(Death());
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

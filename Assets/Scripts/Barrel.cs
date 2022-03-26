@@ -34,7 +34,6 @@ public class Barrel : MonoBehaviour
         if (collision.gameObject.CompareTag("Platform") && collision.gameObject.layer != LayerMask.NameToLayer("TransparentFX"))
         {
             rb.AddForce(collision.transform.right * speed, ForceMode2D.Impulse);
-            Debug.Log("Fatto");
         }
     }
 }
