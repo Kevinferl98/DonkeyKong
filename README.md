@@ -5,5 +5,5 @@
 
 <img src="preview.gif" alt="preview">
 
-<span>Update</span>
+<span>Update</span><br>
 <img src="preview2.gif" alt="update">
