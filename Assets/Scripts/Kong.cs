@@ -6,6 +6,7 @@ using System;
 public class Kong : MonoBehaviour
 {
     public GameObject prefab;
+    public GameObject blueBarrel;
     public GameObject empty;
     public float minTime = 2f;
     public float maxTime = 5f;
@@ -32,7 +33,11 @@ public class Kong : MonoBehaviour
             if (GameManager.Instance().play == true)
             {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-                Instantiate(prefab, empty.transform.position, Quaternion.identity);
+                int random = UnityEngine.Random.Range(0, 20);
+                if (random < 5)
+                    Instantiate(blueBarrel, empty.transform.position, Quaternion.identity);
+                else
+                    Instantiate(prefab, empty.transform.position, Quaternion.identity);
                 yield return new WaitForSeconds(0.5f);
                 transform.rotation = Quaternion.identity;
                 yield return new WaitForSeconds((float)GetRandomNumber(1, 3));
