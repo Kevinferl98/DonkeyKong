@@ -6,6 +6,7 @@ public class Barrel : MonoBehaviour
 {
     private Rigidbody2D rb;
     public float speed = 1f;
+    public GameObject barrelFall;
 
     void Awake()
     {
@@ -36,6 +37,18 @@ public class Barrel : MonoBehaviour
         if (collision.gameObject.CompareTag("Platform") && collision.gameObject.layer != LayerMask.NameToLayer("TransparentFX"))
         {
             rb.AddForce(collision.transform.right * speed, ForceMode2D.Impulse);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ladder") && collision.gameObject.transform.position.y < transform.position.y)
+        {
+            int random = UnityEngine.Random.Range(0, 20);
+            if (random < 5) {
+                Destroy(gameObject);
+                Instantiate(barrelFall, transform.position, Quaternion.identity);
+            }
         }
     }
 }
