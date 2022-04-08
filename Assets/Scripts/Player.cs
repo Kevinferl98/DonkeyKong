@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float speed = 2f;
     private bool scala = false;
     private bool jumping = false;
+    private bool hammer = false;
     private bool ground = true;
     private Vector2 start = new Vector2(-4.5f, -4f);
 
@@ -31,7 +32,7 @@ public class Player : MonoBehaviour
     }
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") /*&& Mathf.Abs(_rigidbody.velocity.y) < 0.001f*/&& ground==true && scala == false)
+        if (Input.GetButtonDown("Jump") /*&& Mathf.Abs(_rigidbody.velocity.y) < 0.001f*/&& ground==true && scala == false && hammer==false)
         {
             animator.SetBool("isJumping", true);
             _rigidbody.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour
     }
     private void Ladder()
     {
-        if (scala == true && jumping == false)
+        if (scala == true && jumping == false && hammer == false)
         {
             _rigidbody.gravityScale = 0;
             float movement_vertical = Input.GetAxis("Vertical");
@@ -103,5 +104,19 @@ public class Player : MonoBehaviour
             scala = false;
             animator.SetBool("ladder", false);
         }
+        else if (collision.gameObject.CompareTag("Hammer"))
+        {
+            StartCoroutine(Hammer());
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private IEnumerator Hammer()
+    {
+        hammer = true;
+        animator.SetBool("Hammer", true);
+        yield return new WaitForSeconds(7f);
+        animator.SetBool("Hammer", false);
+        hammer = false;
     }
 }
