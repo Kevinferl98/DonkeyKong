@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private bool jumping = false;
     private bool hammer = false;
     private bool ground = true;
+    private bool mario_hit = false;
     private Vector2 start = new Vector2(-4.5f, -4f);
 
     public Animator animator;
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour
     }
     private void HorizontalMovement()
     {
-        float movement = Input.GetAxis("Horizontal");
+        float movement = Input.GetAxis("Horizontal"); 
         animator.SetFloat("Speed", Mathf.Abs(movement));
         transform.position += new Vector3(movement, 0, 0) * Time.deltaTime * speedMovement;
 
@@ -54,19 +55,27 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HorizontalMovement();
+        if (mario_hit == false)
+        {
+            HorizontalMovement();
+            Jump();
+            Ladder();
+        }
+        /*HorizontalMovement();
         Jump();
-        Ladder();
+        Ladder();*/
     }
 
     private IEnumerator Death()
     {
+        mario_hit = true;
         Physics2D.IgnoreLayerCollision(0, 2, true);
         animator.SetBool("hit", true);
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(2.1f);
         animator.SetBool("hit", false);
         Physics2D.IgnoreLayerCollision(0, 2, false);
         transform.position = start;
+        mario_hit = false;
         GameManager.Instance().Restart();
     }
 
@@ -116,6 +125,9 @@ public class Player : MonoBehaviour
         hammer = true;
         animator.SetBool("Hammer", true);
         yield return new WaitForSeconds(7f);
+        animator.SetBool("Stop", true);
+        yield return new WaitForSeconds(2f);
+        animator.SetBool("Stop", false);
         animator.SetBool("Hammer", false);
         hammer = false;
     }
