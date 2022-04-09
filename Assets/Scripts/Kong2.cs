@@ -57,7 +57,7 @@ public class Kong2 : MonoBehaviour
                 anim.SetBool("NormalBarrel", false);
                 Instantiate(prefab, empty.transform.position, Quaternion.identity);*/
                 //transform.rotation = Quaternion.identity;
-                yield return new WaitForSeconds((float)GetRandomNumber(1, 3));
+                yield return new WaitForSeconds((float)GetRandomNumber(1, 2));
             }
             else
                 yield return new WaitForSeconds(2f);

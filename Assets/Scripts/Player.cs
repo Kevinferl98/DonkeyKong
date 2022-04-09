@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 
     public Animator animator;
     private Rigidbody2D _rigidbody;
+    [SerializeField] GameObject destroy;
 
     // Start is called before the first frame update
     void Start()
@@ -94,8 +95,18 @@ public class Player : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Barrel"))
         {
-            Debug.Log("Colpito Mario");
-            StartCoroutine(Death());
+            if (hammer == true)
+            {
+                Destroy(collision.gameObject);
+                Instantiate(destroy, collision.gameObject.transform.position, Quaternion.identity);
+            }
+            else
+            {
+                Debug.Log("Colpito Mario");
+                StartCoroutine(Death());
+            }
+            //Debug.Log("Colpito Mario");
+            //StartCoroutine(Death());
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
