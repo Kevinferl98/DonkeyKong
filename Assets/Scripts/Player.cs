@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private bool hammer = false;
     private bool ground = true;
     private bool mario_hit = false;
+    private bool isMoving = false;
     private Vector2 start = new Vector2(-4.5f, -4f);
 
     public Animator animator;
@@ -29,6 +30,19 @@ public class Player : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(movement));
         transform.position += new Vector3(movement, 0, 0) * Time.deltaTime * speedMovement;
 
+        if (movement!=0 && jumping == false && mario_hit==false && scala==false)
+            isMoving = true;
+        else
+            isMoving = false;
+
+        if (isMoving)
+        {
+            if (!AudioManager.Instance().walk.isPlaying)
+                AudioManager.Instance().PlayWalk();
+        }
+        else
+            AudioManager.Instance().StopWalk(); 
+
         if (!Mathf.Approximately(0, movement))
             transform.rotation = movement > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
     }
@@ -36,6 +50,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") /*&& Mathf.Abs(_rigidbody.velocity.y) < 0.001f*/&& ground==true && scala == false && hammer==false)
         {
+            AudioManager.Instance().PlayJump();
             animator.SetBool("isJumping", true);
             _rigidbody.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
             jumping = true;
@@ -56,7 +71,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mario_hit == false)
+        if (mario_hit == false && GameManager.Instance().play==true)
         {
             HorizontalMovement();
             Jump();
@@ -69,10 +84,12 @@ public class Player : MonoBehaviour
 
     private IEnumerator Death()
     {
+        AudioManager.Instance().StopWalk();
+        AudioManager.Instance().PlayDeath();
         mario_hit = true;
         Physics2D.IgnoreLayerCollision(0, 2, true);
         animator.SetBool("hit", true);
-        yield return new WaitForSeconds(2.1f);
+        yield return new WaitForSeconds(3f); // 2.1 
         animator.SetBool("hit", false);
         Physics2D.IgnoreLayerCollision(0, 2, false);
         transform.position = start;
@@ -127,7 +144,8 @@ public class Player : MonoBehaviour
         else if (collision.gameObject.CompareTag("Hammer"))
         {
             StartCoroutine(Hammer());
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 

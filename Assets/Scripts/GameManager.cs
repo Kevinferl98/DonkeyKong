@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public GameObject mario;
     private static GameManager instance;
-    public bool play = true;
+    [SerializeField] GameObject hammer; 
+    public bool play;
     public bool restart = false;
 
     private void Awake()
@@ -26,7 +27,9 @@ public class GameManager : MonoBehaviour
     {
         restart = true;
         play = false;
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
+        hammer.SetActive(true);
         restart = false;
         play = true;
     }
@@ -39,7 +42,20 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    
+        StartCoroutine(Intro());
+    }
+
+    private IEnumerator Intro()
+    {
+        play = false;
+        Debug.Log("Valore di play: " + play);
+        MenuManager.Instance().OpenIntro();
+        AudioManager.Instance().PlayIntro();
+        yield return new WaitForSeconds(3f);
+        MenuManager.Instance().CloseIntro();
+        AudioManager.Instance().PlayBackground();
+        play = true;
+        Debug.Log("Valore di play: " + play);
     }
 
     // Update is called once per frame

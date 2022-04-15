@@ -10,6 +10,8 @@ public class Kong2 : MonoBehaviour
     public float minTime = 2f;
     public float maxTime = 5f;
 
+    int count = 0;
+
     public Animator anim;
 
     // Start is called before the first frame update
@@ -31,6 +33,12 @@ public class Kong2 : MonoBehaviour
             Debug.Log("Ripeto il ciclo");
             if (GameManager.Instance().play == true)
             {
+                count++;
+                if(count==1){
+                    yield return new WaitForSeconds(2f);
+                    continue;
+                }
+                Debug.Log("Sono dentro");
                 //transform.rotation = Quaternion.Euler(0, 180, 0);
                 /*int random = UnityEngine.Random.Range(0, 20);
                 if (random < 5)
